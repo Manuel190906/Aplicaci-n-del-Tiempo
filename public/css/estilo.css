@@ -1,0 +1,208 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1a2a3a;
+    color: #e0e0e0;
+    font-family: Georgia, serif;
+    min-height: 100vh;
+}
+
+.contenedor {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+h2 {
+    font-size: 1.4em;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+h3 {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #cccccc;
+}
+
+/* Formulario */
+.formulario {
+    margin-bottom: 30px;
+}
+
+.formulario input[type="text"] {
+    padding: 10px 14px;
+    font-size: 1em;
+    width: 300px;
+    border: 1px solid #445566;
+    background: #243447;
+    color: #e0e0e0;
+    font-family: Georgia, serif;
+}
+
+.formulario button,
+.btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    background: #2c5f8a;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    font-family: Georgia, serif;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.formulario button:hover,
+.btn:hover {
+    background: #3a7ab5;
+}
+
+/* Errores y avisos */
+.error {
+    background: #5a2020;
+    border: 1px solid #aa4444;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    color: #ffcccc;
+}
+
+/* Bloques de datos */
+.bloque {
+    background: #243447;
+    border: 1px solid #334455;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.dato {
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.dato span {
+    color: #aabbcc;
+}
+
+/* Navegacion entre paginas */
+.navegacion {
+    margin-bottom: 30px;
+}
+
+.navegacion a {
+    color: #7ab3d9;
+    text-decoration: none;
+    margin-right: 15px;
+    font-size: 0.95em;
+}
+
+.navegacion a:hover {
+    text-decoration: underline;
+}
+
+/* Tabla del historial */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th {
+    background: #2c5f8a;
+    padding: 10px;
+    text-align: left;
+    font-weight: normal;
+    font-size: 0.9em;
+    color: #ffffff;
+}
+
+table td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #334455;
+    font-size: 0.9em;
+}
+
+table tr:hover td {
+    background: #2a3d50;
+}
+
+/* Grafica simple con barras en HTML/CSS */
+.grafica {
+    margin-top: 20px;
+}
+
+.barra-fila {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.85em;
+}
+
+.barra-etiqueta {
+    width: 80px;
+    color: #aabbcc;
+    flex-shrink: 0;
+}
+
+.barra-contenedor {
+    flex: 1;
+    background: #1a2a3a;
+    height: 20px;
+    position: relative;
+}
+
+.barra-relleno {
+    height: 100%;
+    background: #2c5f8a;
+    display: flex;
+    align-items: center;
+    padding-left: 6px;
+    font-size: 0.8em;
+    color: #ffffff;
+    min-width: 30px;
+}
+
+/* Filas de prevision por horas */
+.fila-hora {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #334455;
+    font-size: 0.9em;
+}
+
+.fila-hora:last-child {
+    border-bottom: none;
+}
+
+.fila-dia {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #334455;
+    font-size: 0.9em;
+}
+
+.fila-dia:last-child {
+    border-bottom: none;
+}
+
+a.volver {
+    color: #7ab3d9;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+a.volver:hover {
+    text-decoration: underline;
+}
