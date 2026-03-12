@@ -151,3 +151,6 @@ docker compose down
 
 - GitHub: `https://github.com/Manuel190906/Aplicaci-n-del-Tiempo`
 - App desplegada: `http://IP_PUBLICA_AWS`
+
+Realizado por : Manuel Ramírez Rodríguez
+Curso : ASIR 2º.
