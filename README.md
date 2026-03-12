@@ -1,49 +1,59 @@
-# Aplicacion del Tiempo - PHP MVC
+# Weather App - Consulta del tiempo con PHP
 
-Aplicacion web que permite consultar el tiempo atmosferico de cualquier ciudad del mundo usando la API de OpenWeatherMap. Desarrollada en PHP siguiendo el patron MVC, con base de datos MariaDB y desplegada con Docker.
+Practica de 2 ASIR. Una web hecha en PHP con el patron MVC que te permite buscar cualquier ciudad del mundo y ver su prevision meteorologica. Los datos vienen de la API gratuita de OpenWeatherMap y todas las busquedas se guardan en una base de datos MariaDB. Todo corre dentro de Docker.
+
+Este proyecto no se puede levantar en AWS, debido a que no tengo cuenta de AWS por lo que me veo obligado a hacerlo en local.
+---
+
+## Que hace la aplicacion
+
+Escribes el nombre de una ciudad, la app la busca con la API de geocoding y si existe te da tres opciones:
+
+- Ver el tiempo en este momento (temperatura, humedad, viento...)
+- Ver como va a estar el tiempo hora a hora durante el dia
+- Ver la prevision para los proximos dias de la semana
+
+Ademas de mostrar los datos en texto, hay una grafica de barras hecha en CSS puro para visualizar las temperaturas. Cada consulta que se hace queda registrada en la base de datos, y hay una pagina opcional para ver el historial completo.
 
 ---
 
-## Estructura del proyecto
+## Organizacion del codigo
+
+He seguido el patron MVC para separar bien las responsabilidades:
 
 ```
 weather-app/
-├── index.php                        <- Router principal
+├── index.php                     <- Punto de entrada, hace de router
 ├── config/
-│   └── database.php                 <- API key y configuracion de BD
+│   └── database.php              <- Credenciales de BD y API key
 ├── controllers/
-│   └── WeatherController.php        <- Controlador principal
+│   └── WeatherController.php     <- Recibe las peticiones y coordina todo
 ├── models/
-│   ├── Database.php                 <- Conexion a MariaDB con PDO
-│   └── WeatherModel.php             <- Llamadas a la API con cURL
+│   ├── Database.php              <- Conexion PDO a MariaDB
+│   └── WeatherModel.php          <- Llama a la API con cURL
 ├── dao/
-│   └── ConsultaDAO.php              <- Guarda y lee consultas de la BD
+│   └── ConsultaDAO.php           <- Inserta y recupera datos de la BD
 ├── views/
-│   ├── index.php                    <- Formulario de busqueda
-│   ├── ciudad.php                   <- Ciudad encontrada + opciones
-│   ├── actual.php                   <- Tiempo actual + grafica
-│   ├── horas.php                    <- Prevision por horas + grafica
-│   ├── semana.php                   <- Prevision semanal + grafica
-│   └── historial.php                <- Historial de consultas
+│   ├── index.php                 <- Pagina de inicio con el buscador
+│   ├── ciudad.php                <- Resultado de la busqueda
+│   ├── actual.php                <- Tiempo actual
+│   ├── horas.php                 <- Prevision por horas
+│   ├── semana.php                <- Prevision semanal
+│   └── historial.php             <- Listado de consultas realizadas
 ├── public/css/
-│   └── estilo.css                   <- Estilos
-├── database.sql                     <- Script SQL para crear la BD
+│   └── estilo.css
+├── database.sql
 ├── Dockerfile
 └── docker-compose.yml
 ```
 
----
-
-## Como funciona el MVC
-
-- **Modelo** (`WeatherModel.php`, `Database.php`): se encarga de hablar con la API y con la base de datos.
-- **Vista** (archivos dentro de `views/`): solo muestra los datos, sin logica.
-- **Controlador** (`WeatherController.php`): recibe la peticion del usuario, llama al modelo y carga la vista.
-- **Router** (`index.php`): segun el parametro `accion` de la URL, decide que metodo del controlador ejecutar.
+El router (`index.php`) lee el parametro `accion` de la URL y llama al metodo correspondiente del controlador. El controlador usa el modelo para obtener datos y luego carga la vista.
 
 ---
 
 ## Base de datos
+
+Solo hay una tabla. Guarda cada consulta que se hace con la ciudad, las coordenadas, el tipo de consulta y la fecha:
 
 ```sql
 CREATE TABLE consultas (
@@ -58,103 +68,86 @@ CREATE TABLE consultas (
 
 ---
 
-## API utilizada
+## Endpoints de la API
 
-Se usan tres endpoints de OpenWeatherMap:
-
-**Geocoding** (buscar ciudad por nombre):
+**Buscar ciudad:**
 ```
 GET /geo/1.0/direct?q={ciudad}&limit=1&appid={API_KEY}
 ```
 
-**Tiempo actual:**
+**Tiempo ahora mismo:**
 ```
 GET /data/2.5/weather?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang=es
 ```
 
-**Prevision por horas y semanal:**
+**Prevision (horas y dias):**
 ```
 GET /data/2.5/forecast?lat={lat}&lon={lon}&appid={API_KEY}&units=metric&lang=es&cnt=8
 ```
 
 ---
 
-## Configuracion
+## Primeros pasos de configuración
 
-Abre `config/database.php` y pon tu clave de OpenWeatherMap:
+### 1. Poner la API key para que funcione
+
+En `config/database.php` cambia esta linea con tu clave de OpenWeatherMap:
 
 ```php
-define('API_KEY', 'tu_clave_aqui');
+define('API_KEY', 'aqui_va_tu_clave');
 ```
 
-La clave gratuita se obtiene en [openweathermap.org](https://openweathermap.org/api). Las claves nuevas pueden tardar hasta 2 horas en activarse.
+Si no tienes cuenta, registrate gratis en openweathermap.org. Ojo que las claves nuevas tardan un rato en activarse (puede ser hasta 2 horas).
 
----
-
-## Instalacion
-
-### Con Docker (recomendado)
+### 2. Levantar con Docker
 
 ```bash
 docker compose up -d --build
 ```
 
-Abre en el navegador: `http://localhost`
+Luego abre el navegador en `http://localhost:8087` y ya esta.
 
-Para parar:
+Para apagar el contenedor:
 ```bash
 docker compose down
 ```
 
-### Sin Docker (XAMPP)
+### 3. Sin Docker (XAMPP)
 
-1. Copia la carpeta dentro de `htdocs`
-2. Importa `database.sql` en MariaDB
-3. Ajusta los datos de conexion en `config/database.php`
-4. Abre `http://localhost/weather-app/`
+1. Pon la carpeta en `htdocs`
+2. Importa `database.sql` en tu MariaDB
+3. Cambia los datos de conexion en `config/database.php`
+4. Entra a `http://localhost:8087/weather-app/`
 
 ---
 
 ## Despliegue en AWS
 
-1. Lanza una instancia EC2 con Ubuntu
-2. Instala Docker y Docker Compose
-3. Sube el proyecto o clona desde GitHub
-4. Ejecuta `docker compose up -d --build`
-5. Abre el puerto 80 en el grupo de seguridad
-6. Accede con la IP publica de la instancia
+1. Crear instancia EC2 con Ubuntu
+2. Instalar Docker y Docker Compose en la maquina
+3. Subir el proyecto (con `scp` o clonando el repo)
+4. Ejecutar `docker compose up -d --build`
+5. Abrir el puerto 80 en las reglas del grupo de seguridad
+6. Acceder desde el navegador con la IP publica
 
 ---
 
-## Funcionalidades
+## Tecnologias usadas
 
-- Busqueda de ciudades por nombre
-- Si la ciudad no existe se muestra un error
-- Tiempo actual: temperatura, humedad, presion, viento, visibilidad y nubosidad
-- Prevision por horas: datos cada 3 horas para las proximas 24 horas
-- Prevision semanal: un dato representativo por dia
-- Graficas de barras en CSS para visualizar temperaturas
-- Guardado automatico de cada consulta en la BD usando DAO
-- Historial con todas las consultas realizadas (pagina opcional)
-
----
-
-## Tecnologias
-
-| Tecnologia | Uso |
+| Cosa | Para que sirve |
 |---|---|
-| PHP 8.2 | Backend |
-| Apache | Servidor web |
+| PHP 8.2 | El backend de toda la vida |
+| Apache | Servidor web dentro del contenedor |
 | MariaDB | Base de datos |
-| PDO | Conexion a la BD |
-| cURL | Llamadas a la API |
-| HTML + CSS | Frontend |
-| Docker + Compose | Despliegue |
-| OpenWeatherMap API | Datos meteorologicos |
+| PDO | Conectar PHP con la BD de forma segura |
+| cURL | Hacer las peticiones HTTP a la API |
+| HTML + CSS | El frontend, sencillo y sin librerias |
+| Docker | Contenedores para no liarse con la instalacion |
+| OpenWeatherMap | La API que nos da los datos del tiempo |
 
 ---
 
-## Repositorio y acceso
+## Enlace al repo y a la app
 
-- Repositorio GitHub: `https://github.com/tuusuario/weather-app`
-- URL de la aplicacion: `http://IP_PUBLICA_AWS`
+- GitHub: `https://github.com/Manuel190906/Aplicaci-n-del-Tiempo`
+- App desplegada: `http://IP_PUBLICA_AWS`
