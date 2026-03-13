@@ -150,7 +150,7 @@ docker compose down
 ## Enlace al repo y a la app
 
 - GitHub: `https://github.com/Manuel190906/Aplicaci-n-del-Tiempo`
-- App desplegada: `http://IP_PUBLICA_AWS`
+- App desplegada: `http:manuelr.servehalflife.com`
 
 Realizado por : Manuel Ramírez Rodríguez
 Curso : ASIR 2º.
