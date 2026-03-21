@@ -12,7 +12,7 @@ services:
       - DB_HOST=db
     networks:
       - weather_network
-
+    restart: always        
   # Base de datos MariaDB
   db:
     image: mariadb:10.11
@@ -26,7 +26,7 @@ services:
       - ./database.sql:/docker-entrypoint-initdb.d/database.sql
     networks:
       - weather_network
-
+    restart: always        
 volumes:
   db_data:
 
