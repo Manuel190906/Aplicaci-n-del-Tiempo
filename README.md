@@ -15,6 +15,13 @@ Escribes el nombre de una ciudad, la app la busca con la API de geocoding y si e
 
 Ademas de mostrar los datos en texto, hay una grafica de barras hecha en CSS puro para visualizar las temperaturas. Cada consulta que se hace queda registrada en la base de datos, y hay una pagina opcional para ver el historial completo.
 
+
+Para asegurarte del todo, ejecuta esto en la instancia AWS una sola vez:
+bashsudo systemctl enable docker
+Y después levanta los contenedores en modo detached para que queden registrados:
+bashdocker compose up -d --build
+
+
 ---
 
 ## Organizacion del codigo
